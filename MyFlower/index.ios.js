@@ -23,6 +23,7 @@ var {
 
 var MyFlower = React.createClass ({
 
+  //初始化函数
   getInitialState() {
     return {
       selectedTab: 'zt'

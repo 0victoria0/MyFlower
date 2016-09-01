@@ -30,6 +30,7 @@ var MyFlower = React.createClass ({
     }
   },
 
+  //设置选中的Tab Bar Item
   changeTab(tabName) {
     this.setState({
       selectedTab: tabName

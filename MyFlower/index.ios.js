@@ -6,11 +6,11 @@
 
 'use strict';
 
-var React = require('react')
-var MyReact = require('react-native')
-var Theme = require('./Theme/Pages/Theme')
-var JZMenuCard = require('./Theme/Pages/JZMenuCard')
-var Comment = require('./Theme/CustomView/Comment')
+var React = require('react');
+var MyReact = require('react-native');
+var Theme = require('./Theme/Pages/Theme');
+var JZMenuCard = require('./Theme/Pages/JZMenuCard');
+var Comment = require('./Theme/CustomView/Comment');
 
 var {
   AppRegistry,

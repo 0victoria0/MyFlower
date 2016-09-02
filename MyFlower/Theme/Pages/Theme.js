@@ -6,7 +6,7 @@
 'use strict';
 
 var React = require('react');
-var MyReact = require('react-native')
+var MyReact = require('react-native');
 
 var {
   StyleSheet,
@@ -30,13 +30,13 @@ var Theme = React.createClass({
       isLoading:false,
       isRefreshing:false,
       isMore:false,
-      dataSource: ds.cloneWithRows(['row1','row2']),
+      dataSource: ds.cloneWithRows(['row1','row2'])
     };
   },
 
   //控件加载完毕后调用
   componentDidMount() {
-    console.log('控件加载完毕后调用')
+    console.log('控件加载完毕后调用');
     this.fetchData(false,false,'1')
   },
 
@@ -47,17 +47,17 @@ var Theme = React.createClass({
       currentPageIndex:currentPageIndex,
       pageSize:pageSize,
       cateId:cateId?cateId:''
-    }
+    };
     var queryString = Object.keys(data)
       .map(key => key+'='+encodeURIComponent(data[key]))
-      .join('&')
+      .join('&');
     return 'http://m.htxq.net/servlet/SysArticleServlet?'+queryString
   },
 
   //获取数据
   fetchData(isRefreshing,isMore,currentPageIndex) {
     var url = this._getListUrl(currentPageIndex,'5','8dba5958-7da0-4ce9-b1e9-5b92343519a7');
-    console.log(url)
+    console.log(url);
 
     this.setState({
       isLoading:true,
@@ -68,7 +68,7 @@ var Theme = React.createClass({
     fetch(url)
       .then((response) => response.json())
       .catch((error) => {
-        console.log('请求失败')
+        console.log('请求失败');
         if (currentPage==1) {
           dataSource=[];
         }else{
@@ -104,13 +104,13 @@ var Theme = React.createClass({
 
   //下拉刷新
   onRefresh(){
-    console.log('刷新开始')
-    currentPage=1
+    console.log('刷新开始');
+    currentPage=1;
     this.fetchData(true,false,currentPage)
   },
 
   onEndReached(){
-    console.log('上拉加载更多')
+    console.log('上拉加载更多');
     currentPage++;
     this.fetchData(false,true,currentPage)
   },
@@ -129,9 +129,9 @@ var Theme = React.createClass({
 
   //渲染Cell
   _renderRow(result) {
-    var author = result.author?result.author:''
-    var category = result.category?result.category:''
-    console.log('rowContainer',result)
+    var author = result.author?result.author:'';
+    var category = result.category?result.category:'';
+    console.log('rowContainer',result);
     return(
       <View style={ styles.contentItem }>
         <View style={ styles.containerItem }>
@@ -224,7 +224,7 @@ var Theme = React.createClass({
           </Text>
         </View>
       )
-    };
+    }
 
     return (
       <ListView style={styles.listView}
@@ -244,7 +244,7 @@ var Theme = React.createClass({
         }>
       </ListView>
     );
-  },
+  }
 
 });
 
@@ -257,7 +257,7 @@ var styles = StyleSheet.create({
     padding:10
   },
   containerItem:{
-    backgroundColor:'#ffffff',
+    backgroundColor:'#ffffff'
   } 
 });
 

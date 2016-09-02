@@ -69,10 +69,12 @@ var Theme = React.createClass({
       .then((response) => response.json())
       .catch((error) => {
         console.log('请求失败')
-        if (this.state.isMore) {
+        if (currentPage==1) {
+          dataSource=[];
+        }else{
           dataSource=[];
           currentPage--;
-        };
+        }
         this.setState({
           dataSource:[],
           isRefreshing:false,
@@ -83,7 +85,8 @@ var Theme = React.createClass({
       .then((responseData) => {
         let list = responseData.result;
         if (this.state.isRefreshing) {
-          totalList.splice(0,totalList.length);
+          // totalList.splice(0,totalList.length);//清空数组
+          totalList = [];
         }
         for(var i=0; i<list.length; i++){
           totalList.push( list[i] );

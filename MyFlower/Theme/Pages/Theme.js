@@ -142,11 +142,11 @@ var Theme = React.createClass({
           
           <View style={{ flex:1, flexDirection:'row', justifyContent:'flex-end' }}>
             <View style={{ flex:1, marginRight:8, alignItems:'flex-end' }}>
-              <Text style={{ fontSize:14 }}>
-                { author.identity?author.identity:'' }
-              </Text>
-              <Text style={{ fontSize:12 }}>
+              <Text style={{ fontSize:14, marginTop:8 }}>
                 { author.userName?author.userName:'佚名' }
+              </Text>
+              <Text style={{ flex:1, fontSize:12, marginTop:5 }}>
+                { author.identity?author.identity:'' }
               </Text>
             </View>
             <Image

@@ -5,40 +5,43 @@
  */
 'use strict';
 
-var React = require('react');
-var MyReact = require('react-native');
+import React from 'react';
+import{
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    ListView,
+    Text,
+    View,
+    ActivityIndicator,
+    RefreshControl
+} from 'react-native';
 
-var {
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-  ListView,
-  Text,
-  View,
-  ActivityIndicator,
-  RefreshControl
-} = MyReact;
+import Detail from './Test';
 
 var totalList = new Array();
 var currentPage = 1;
 
-var Theme = React.createClass({
-  //初始化函数
-  getInitialState() {
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    return {
-      isLoading:false,
-      isRefreshing:false,
-      isMore:false,
-      dataSource: ds.cloneWithRows(['row1','row2'])
-    };
-  },
+class  Theme extends React.Component{
+  // 构造
+  constructor(props) {
+      super(props);
+      // 初始状态
+      var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      console.log('初始化');
+      this.state = {
+        isLoading:false,
+        isRefreshing:false,
+        isMore:false,
+        dataSource: ds.cloneWithRows(['row'])
+      };
+    }
 
   //控件加载完毕后调用
   componentDidMount() {
     console.log('控件加载完毕后调用');
     this.fetchData(false,false,'1')
-  },
+  };
 
   //请求的URL的拼接
   _getListUrl(currentPageIndex,pageSize,cateId){
@@ -52,7 +55,7 @@ var Theme = React.createClass({
       .map(key => key+'='+encodeURIComponent(data[key]))
       .join('&');
     return 'http://m.htxq.net/servlet/SysArticleServlet?'+queryString
-  },
+  };
 
   //获取数据
   fetchData(isRefreshing,isMore,currentPageIndex) {
@@ -100,20 +103,20 @@ var Theme = React.createClass({
         console.log('response',responseData)
       }) 
       .done();
-  },
+  };
 
   //下拉刷新
   onRefresh(){
     console.log('刷新开始');
     currentPage=1;
     this.fetchData(true,false,currentPage)
-  },
+  };
 
   onEndReached(){
     console.log('上拉加载更多');
     currentPage++;
     this.fetchData(false,true,currentPage)
-  },
+  };
 
   _renderFooter(){
     return(
@@ -125,7 +128,16 @@ var Theme = React.createClass({
         </Text>
       </View>
     )
-  },
+  };
+
+  _clickContentItem(result){
+      console.log('点击cell');
+      this.props.navigator.push({ 
+          title:'Detail', 
+          component:Detail, 
+          passProps:''
+       })
+  };
 
   //渲染Cell
   _renderRow(result) {
@@ -133,13 +145,14 @@ var Theme = React.createClass({
     var category = result.category?result.category:'';
     console.log('rowContainer',result);
     return(
-      <View style={ styles.contentItem }>
-        <View style={ styles.containerItem }>
+        <TouchableOpacity onPress={this._clickContentItem.bind(this)}>
+          <View style={ styles.contentItem }>
+          <View style={ styles.containerItem }>
           <Image
             style={{ height: 160 }}
             source={{ uri: result.smallIcon }}>
           </Image>
-          
+
           <View style={{ flex:1, flexDirection:'row', justifyContent:'flex-end' }}>
             <View style={{ flex:1, marginRight:8, alignItems:'flex-end' }}>
               <Text style={{ fontSize:14, marginTop:8 }}>
@@ -171,9 +184,9 @@ var Theme = React.createClass({
           </Text>
           <View style={{ height:2, marginTop:5, marginLeft:10, marginRight:10, backgroundColor:'#eeeeee' }}>
           </View>
-          
+
           <View style = {{ marginTop:10, marginBottom:10, flexDirection:'row', justifyContent:'flex-end' }}>
-            <TouchableHighlight>
+            <View>
               <View style={{ flexDirection:'row', justifyContent:'flex-end' }}>
                 <Image
                   style={{ marginRight:10, width:15, height:15 }}
@@ -183,8 +196,8 @@ var Theme = React.createClass({
                   {result.read?result.read:0}
                 </Text>
               </View>
-            </TouchableHighlight>
-            <TouchableHighlight>
+            </View>
+            <View>
               <View style={{ flexDirection:'row', justifyContent:'flex-end' }}>
                 <Image
                   style={{ marginRight:10, width:15, height:15 }}
@@ -194,8 +207,8 @@ var Theme = React.createClass({
                   {result.favo?result.favo:0}
                 </Text>
               </View>
-            </TouchableHighlight>
-            <TouchableHighlight>
+            </View>
+            <View>
               <View style={{ flexDirection:'row', justifyContent:'flex-end' }}>
                 <Image
                   style={{ marginRight:10, width:15, height:15 }}
@@ -205,13 +218,14 @@ var Theme = React.createClass({
                   {result.fnCommentNum?result.fnCommentNum:0}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </View>
           </View>
 
         </View>
-      </View>
+          </View>
+        </TouchableOpacity>
     )
-  },
+  };
 
   render() {
     if (this.state.animating && !this.state.isRefreshing) {
@@ -229,7 +243,7 @@ var Theme = React.createClass({
     return (
       <ListView style={styles.listView}
         dataSource={this.state.dataSource}
-        renderRow={this._renderRow}
+        renderRow={this._renderRow.bind(this)}
         showsVerticalScrollIndicator = {false}
         onEndReached={() => this.onEndReached()}
         onEndReachedThreshold={0}
@@ -245,20 +259,20 @@ var Theme = React.createClass({
       </ListView>
     );
   }
+}
 
-});
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   listView:{
-    backgroundColor:'#f1f1f1'
+      marginTop:64,
+      backgroundColor:'#f1f1f1'
   },
   contentItem:{
-    backgroundColor:'#f1f1f1',
-    padding:10
+      backgroundColor:'#f1f1f1',
+      padding:10
   },
   containerItem:{
-    backgroundColor:'#ffffff'
+      backgroundColor:'#ffffff'
   } 
 });
 
-module.exports = Theme;
+export default Theme;

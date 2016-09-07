@@ -13,11 +13,13 @@ import{
     ListView,
     Text,
     View,
+    ScrollView,
     ActivityIndicator,
     RefreshControl
 } from 'react-native';
 
 import Detail from './Test';
+import NavigationBar from '../NavigationBar/NavigationBar';
 
 var totalList = new Array();
 var currentPage = 1;
@@ -33,7 +35,8 @@ class  Theme extends React.Component{
         isLoading:false,
         isRefreshing:false,
         isMore:false,
-        dataSource: ds.cloneWithRows(['row'])
+        dataSource: ds.cloneWithRows(['row']),
+          selectedTab:'zt'
       };
     }
 
@@ -227,7 +230,28 @@ class  Theme extends React.Component{
     )
   };
 
-  render() {
+    _leftItemAction() {
+        console.log('左侧按钮点击了');
+    }
+
+    _rightItemAction() {
+        console.log('右侧按钮点击了');
+    }
+
+    _renderHeader(){
+        return(
+            <NavigationBar
+                title='这个是标题'
+                leftItemTitle="返回"
+                LeftTextColor='#3393F2'
+                rightItemTitle='按钮'
+                rightTextColor='#3393F2'
+                leftItemFunc={this._leftItemAction}
+                leftItemFunc={this._rightItemAction}/>
+        )
+    }
+
+    render() {
     if (this.state.animating && !this.state.isRefreshing) {
       return (
         <View style={{ flex:1, flexDirection:'row', justifyContent:'center', alignItems:'center' }}>
@@ -240,30 +264,33 @@ class  Theme extends React.Component{
       )
     }
 
+
+
     return (
-      <ListView style={styles.listView}
-        dataSource={this.state.dataSource}
-        renderRow={this._renderRow.bind(this)}
-        showsVerticalScrollIndicator = {false}
-        onEndReached={() => this.onEndReached()}
-        onEndReachedThreshold={0}
-        renderFooter={this._renderFooter}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this.onRefresh}
-            title="Loading..."
-            progressBackgroundColor="#ffff00">
-          </RefreshControl>
-        }>
-      </ListView>
+            <ListView
+                style={styles.listView}
+                dataSource={this.state.dataSource}
+                renderRow={this._renderRow.bind(this)}
+                showsVerticalScrollIndicator = {false}
+                onEndReached={() => this.onEndReached()}
+                onEndReachedThreshold={0}
+                renderFooter={this._renderFooter}
+                renderHeader={this._renderHeader}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this.onRefresh}
+                        title="Loading..."
+                        progressBackgroundColor="#ffff00">
+                    </RefreshControl>
+                }>
+            </ListView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   listView:{
-      marginTop:64,
       backgroundColor:'#f1f1f1'
   },
   contentItem:{

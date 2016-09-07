@@ -10,7 +10,7 @@ import {
     Text
 } from 'react-native';
 
-class Test extends React.Component {
+export default class Test extends React.Component {
     render(){
         return(
             <View>
@@ -20,4 +20,3 @@ class Test extends React.Component {
     }
 }
 
-export default Test;
